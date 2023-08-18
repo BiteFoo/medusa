@@ -129,6 +129,7 @@ class Parser(cmd2.Cmd):
 
 ###################################################### do_ defs start ############################################################
 
+
     def do_add(self, mod) -> None:
         """
         Add a module which is not indexed/added in the existing modules. 
@@ -1054,7 +1055,6 @@ class Parser(cmd2.Cmd):
 
 ###################################################### complete_ defs start ############################################################
 
-
     def complete_dump(self, text, line, begidx, endidx) -> list:
         return self.complete_list(text, line, begidx, endidx)
 
@@ -1497,7 +1497,7 @@ else:
     import readline
 
 if __name__ == '__main__':
-    if readline.__doc__ is not None and 'libedit' in readline.__doc__:
+    if 'libedit' in readline.__doc__:
         readline.parse_and_bind("bind ^I rl_complete")
     else:
         readline.parse_and_bind("tab: complete")
