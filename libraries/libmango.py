@@ -37,7 +37,7 @@ REVERSE = "\033[;7m"
 BUSSY_BOX_URL = "https://busybox.net/downloads/binaries/1.31.0-defconfig-multiarch-musl/"
 
 HELP_MESSAGE ="\nSYNOPSIS:"+"""
-    mango>[command] <parameters> <flags> """ +"""
+    mango➤[command] <parameters> <flags> """ +"""
 
 DESCRIPTION """+"""
 
@@ -165,7 +165,7 @@ class parser(cmd2.Cmd):
     NO_APP_LOADED_MSG = "[i] No application is loaded, type 'import /path/to/foo.apk' to load one"
     
     base_directory = os.path.dirname(__file__)
-    prompt = Fore.BLUE +Style.BRIGHT +'mango> '+Fore.RESET+Style.RESET_ALL
+    prompt = Fore.BLUE +Style.BRIGHT +'mango➤'+Fore.RESET+Style.RESET_ALL
     current_app_sha256 = None
     database =None
     guava = None
@@ -623,6 +623,8 @@ $adb remount
             print("Extracting: "+base_apk)
             output = os.popen("adb -s {} pull {}".format(self.device.id,base_apk,package)).read()
             print(output)
+            if Polar('Do you want to import the application?').ask():
+                self.do_import('base.apk')
         except Exception as e:
             print(e)
 
@@ -1340,7 +1342,7 @@ $adb remount
             print(e)
     
     def init_packages(self):
-        for line1 in os.popen('adb -s {} shell pm list packages -3'.format(self.device.id)):
+        for line1 in os.popen('adb -s {} shell pm list packages'.format(self.device.id)):
             self.packages.append(line1.split(':')[1].strip('\n'))
 
     def load_or_remove_application(self):
