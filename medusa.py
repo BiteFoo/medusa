@@ -129,7 +129,6 @@ class Parser(cmd2.Cmd):
 
 ###################################################### do_ defs start ############################################################
 
-
     def do_add(self, mod) -> None:
         """
         Add a module which is not indexed/added in the existing modules. 
@@ -756,6 +755,56 @@ class Parser(cmd2.Cmd):
         self.native_handler = nativeHandler(self.device)
         self.native_handler.memops(line)
 
+    def check_device_valid(self):
+        """
+        check device valid for frida hooking.
+        """
+        try:
+            assert self.device is not None
+            assert isinstance(self.device, frida.core.Device)
+            self.device.enumerate_applications()[0]
+            # print("device ")
+            return True
+        except:
+            print(RED+" device is invalid "+RESET)
+            return False
+
+    def do_list_processes(self, line):
+        """
+        List process to show processName pid 
+        Usage: list_process
+        """
+        if not self.check_device_valid():
+            return
+        for i, app in enumerate(self.device.enumerate_processes()):
+            print(f"[{i}] process:{app.name} pid: {app.pid}")
+
+    def do_list_applications(self, line):
+        """
+        List application information.
+        Usage: list_applications
+        """
+        if not self.check_device_valid():
+            return
+        for i, app in enumerate(self.device.enumerate_applications()):
+            print(f"[{i}] name:{app.name}")
+
+    def do_connect(self, line) -> None:
+        """
+        connect to remote device by host:port
+        Usage: connect host:port 
+        """
+        if line == "":
+            print(RED + " Need host:port to be set. "+RESET)
+            return
+        if ":" not in line:
+            print(
+                RED+" Invalid format.  Using 'help connect' command to get details. "+RESET)
+            return
+        self.device = frida.get_device_manager().add_remote_device(line)
+        if not self.check_device_valid():
+            print(f"Can't connect to device with {line}")
+
     def do_memmap(self, line) -> None:
         """
         READ process memory
@@ -1054,6 +1103,7 @@ class Parser(cmd2.Cmd):
 ###################################################### do_ defs end ############################################################
 
 ###################################################### complete_ defs start ############################################################
+
 
     def complete_dump(self, text, line, begidx, endidx) -> list:
         return self.complete_list(text, line, begidx, endidx)
