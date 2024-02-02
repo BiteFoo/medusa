@@ -1,10 +1,11 @@
-androguard
-click
-cmd2
-colorama
-frida
-requests
-urllib3
-google-trans-new
-pick
-PyYAML
+androguard @ git+https://github.com/androguard/androguard.git@0ea2a60ddebaf1c6e4d11aa84668d64c90f6b25f
+click==8.0.3
+cmd2==2.3.3
+colorama==0.4.5
+frida==16.1.4
+frida-tools==12.3.0
+pick==2.2.0
+PyYAML==6.0.1
+requests==2.25.1
+urllib3==1.26.18
+apkInspector

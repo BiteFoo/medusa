@@ -1,5 +1,5 @@
 {
-    "Name": "content_providers/risky_grant_uri_perm",
+    "Name": "risky_api_calls/risky_grant_uri_perm",
     "Description": "Monitor calls to Context.grantUriPermission",
     "Help": "The specific API call grants uri permissions just by package name",
     "Code": "
